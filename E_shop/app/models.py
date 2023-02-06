@@ -21,25 +21,40 @@ class Sub_Category(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.category}'
 
 
 class Product(models.Model):
-    Availability = (('In Stock', 'In Stock'), ('Out of Stock', 'Out of Stock'))
+    Availability = (('Còn Hàng', 'Còn Hàng'), ('Hết Hàng', 'Hết Hàng'))
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default='')
     sub_category = models.ForeignKey(Sub_Category, on_delete=models.CASCADE, default='')
     image = models.ImageField(upload_to='ecommerce/pimg')
     name = models.CharField(max_length=150, default="")
+    author = models.CharField(max_length=255,default="")
+    description = models.TextField(default="")
+    number_of_page = models.PositiveIntegerField(default="0")
     price = models.IntegerField(default=0)
     Availability = models.CharField(choices=Availability,null=True,max_length=100)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
 
     def __str__(self):
         return self.name
 
+class Reviews(models.Model):
+    Rate = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),)
+    # user = models.ForeignKey(User,on_delete=models.PROTECT)
+    product_re = models.ForeignKey(Product,on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    date = models.DateTimeField(auto_now_add=True)
+    comments = models.TextField()
+    rate = models.CharField(choices = Rate, null=True,max_length=100)
+    
+    def __str__(self):
+        return f'{self.product_re} - {self.name} '
+    
 
 class UserCreateForm(UserCreationForm):
-    email = forms.EmailField(required=True, label='Email', error_messages={'exists': 'This Email Already Exists'})
+    email = forms.EmailField(required=True, label='Email', error_messages={'exists': 'Email đã tồn tại.'})
 
     class Meta:
         model = User
@@ -48,17 +63,25 @@ class UserCreateForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserCreateForm, self).__init__(*args, **kwargs)
 
-        self.fields['username'].widget.attrs['placeholder'] = 'User name'
+        self.fields['username'].widget.attrs['placeholder'] = 'Username'
         self.fields['email'].widget.attrs['placeholder'] = 'Email'
-        self.fields['password1'].widget.attrs['placeholder'] = 'Password'
-        self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
+        self.fields['password1'].widget.attrs['placeholder'] = 'Mật Khẩu'
+        self.fields['password2'].widget.attrs['placeholder'] = 'Nhập Lại Mật Khẩu'
 
-    def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
+    # def save(self, commit=True):
+    #     user = super(UserCreationForm, self).save(commit=False)
+    #     user.email = self.cleaned_data['email']
+    #     if commit:
+    #         user.save()
+    #     return user
+    
+    def save(self):
+        user = User.objects.create_user(
+            self.cleaned_data['username'],
+            self.cleaned_data['email'],
+            self.cleaned_data['password1']
+        )
+        return user    
 
     def clean_email(self):
         if User.objects.filter(email=self.cleaned_data['email']).exists():

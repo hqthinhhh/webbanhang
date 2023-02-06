@@ -18,10 +18,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('master/', views.Master, name='master'),
+                #   path('', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='index'),
                   path('', views.Index, name='index'),
                   path('signup', views.signup, name='signup'),
                   path('accounts/', include('django.contrib.auth.urls')),
@@ -47,5 +50,7 @@ urlpatterns = [
                   path('product/<str:id>', views.Product_Detail, name='product_detail'),
                   # search
                   path('search/', views.Search, name='search'),
+                  path('__debug__/', include('debug_toolbar.urls')),
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

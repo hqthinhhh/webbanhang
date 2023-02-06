@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-67u16070%wo+s*#v1rs0y##6t_l8-)v5n4+f)af#kp+o3tg@!y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.32.90','192.168.0.2','27.3.68.110']
 
 
 # Application definition
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
     'cart',
+    'debug_toolbar',
+
 ]
 
 
@@ -53,6 +55,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
+]
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
 ]
 
 ROOT_URLCONF = 'E_shop.urls'
@@ -83,8 +93,11 @@ WSGI_APPLICATION = 'E_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bookstore',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': '20072001'
     }
 }
 
@@ -111,9 +124,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'vi'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Saigon'
 
 USE_I18N = True
 
@@ -141,8 +154,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'team2btlpython@gmail.com'
-EMAIL_HOST_PASSWORD = 'team2btl'
+EMAIL_HOST_USER = 'hqthinh2001@gmail.com'
+EMAIL_HOST_PASSWORD = 'Khongbiet'
 
 
 LOGIN_REDIRECT_URL = 'index'

@@ -6,7 +6,7 @@
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="left-sidebar">
-						<h2>Category</h2>
+						<h2>Danh Mục</h2>
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							{% for cat in category %}
 							<div class="panel panel-default">
@@ -36,7 +36,7 @@
 
 
 						<div class="shipping text-center"><!--shipping-->
-							<img src="images/home/shipping.jpg" alt="" />
+							<img src="/static/images/home/quote.jpeg" style="width: 100%;" alt="" />
 						</div><!--/shipping-->
 
 					</div>
@@ -44,29 +44,38 @@
 
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Features Items</h2>
+						<h2 class="title text-center">TRI THỨC LÀ SỨC MẠNH NHÂN LOẠI</h2>
 
 						{% for prod in product %}
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
 								<div class="single-products">
 										<div class="productinfo text-center">
-											<img src="/{{prod.image}}" alt="" height="200px;"  />
-											<h2>{{prod.price}}$</h2>
+											<img src="/{{prod.image}}" alt="" height="250px;"  />
+											<h2>{{prod.price}}đ</h2>
 											<p>{{prod.name}}</p>
-											<a href="{% url 'cart_add' prod.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+
+											{%if prod.Availability == 'Còn Hàng'%}
+											<a href="{% url 'cart_add' prod.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</a>
+											{%else%}
+											<a style="background-color: grey;color: white" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Hết hàng</a>
+											{%endif%}
 										</div>
 										<div class="product-overlay">
 											<div class="overlay-content">
-												<h2>{{prod.price}}$</h2>
+												<h2>{{prod.price}}đ</h2>
 												<p></p>
-												<a href="{% url 'cart_add' prod.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+												{%if prod.Availability == 'Còn Hàng'%}
+												<a href="{% url 'cart_add' prod.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</a>
+												{%else%}
+												<a class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Hết hàng</a>
+												{%endif%}
 											</div>
 										</div>
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
-										<li><a href="{{prod.id}}"><i class="fa fa-plus-square"></i>View Detail</a></li>
+										<li><a href="{{prod.id}}"><i class="fa fa-plus-square"></i>Xem Chi Tiết</a></li>
 
 									</ul>
 								</div>
@@ -75,12 +84,12 @@
 						{% endfor %}
 
 
-						<ul class="pagination">
+						{% comment %} <ul class="pagination">
 							<li class="active"><a href="">1</a></li>
 							<li><a href="">2</a></li>
 							<li><a href="">3</a></li>
 							<li><a href="">&raquo;</a></li>
-						</ul>
+						</ul> {% endcomment %}
 					</div><!--features_items-->
 				</div>
 			</div>

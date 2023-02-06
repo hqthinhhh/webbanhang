@@ -4,19 +4,27 @@
 		<div class="container">
 			<div class="col-sm-4 col-sm-offset-1">
 				<div class="signup-form"><!--login form-->
-						<h2>Login To Your Account </h2>
+						<h2>Đăng Nhập Vào Tài Khoản </h2>
 						<form method="post">
 							{% csrf_token %}
-							{% for field in form %}
+							{% comment %} {% for field in form %} {% endcomment %}
+						{{ form.as_p }}
 							{{ field.errors }}
 							<label>{{field.label_tag}}</label>
 							<p>{{ field }}</p>
-							{% endfor %}
-							<a href="{% url 'password_reset'%}" style="float: right; ">Forgot password ? </a><br>
-							<button class="btn btn-default" type="submit" >Login</button>
-							<a href="{% url 'signup' %}" ><span style="color: black; margin-left:120px;">Create New Account &nbsp;&rarr;</span> </a>
+							{% comment %} {% endfor %} {% endcomment %}
+							<a href="{% url 'password_reset'%}" style="float: right; ">Quên Mật Khẩu? </a><br>
+							<button class="btn btn-default" type="submit" >Đăng Nhập</button>
+							<a href="{% url 'signup' %}" ><span style="color: black; margin-left:120px;">Tạo Tài Khoản Mới&nbsp;&rarr;</span> </a>
 
 						</form>
+						{% comment %} <form method="post">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<button type="submit">Log In</button>
+						</form> {% endcomment %}
+							<a href="/admin/" ><span style="color: black; margin-left:120px;">Đăng Nhập Admin &nbsp;&rarr;</span> </a>
+
 				</div>
 			</div>
 		</div>

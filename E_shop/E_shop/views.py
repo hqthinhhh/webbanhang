@@ -1,18 +1,35 @@
 from django.shortcuts import render, redirect, HttpResponse
-from app.models import Category, Product, Contact_us, Order
+from app.models import Category, Product, Contact_us, Order, Reviews
 from django.contrib.auth import authenticate, login
 from app.models import UserCreateForm
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 from django.contrib.auth.models import User
+from django.db.models import Avg
+import json
+import requests
+from django.http import HttpResponseRedirect
 
 
+
+
+def get_quote():
+  response = requests.get("https://zenquotes.io/api/random")
+  json_data = json.loads(response.text)
+  quote = json_data[0]["q"] + " -" + json_data[0]["a"]
+  return quote
+ 
 def Master(request):
-    return render(request, 'master.html')
+    quote = get_quote()
+    data = {
+        'quote': quote
+    }
+    return render(request, 'master.html',data)
+
 
 
 def Index(request):
-    category = Category.objects.all()
+    category = Category.objects.all().order_by('category_name')
     categoryID = request.GET.get('category')
     if categoryID:
         product = Product.objects.filter(sub_category=categoryID).order_by('-id')
@@ -45,7 +62,7 @@ def cart_add(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.add(product=product)
-    return redirect("index")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required(login_url="/accounts/login/")
@@ -139,25 +156,61 @@ def Your_Order(request):
 
 
 def Product_page(request):
-    category = Category.objects.all()
+    category = Category.objects.all().order_by('category_name')
     categoryID = request.GET.get('category')
     if categoryID:
         product = Product.objects.filter(sub_category=categoryID).order_by('-id')
+        # review = Reviews.objects.filter(product_re = product)
     else:
         product = Product.objects.all()
     context = {
         'category': category,
         'product': product,
+        # 'review': review,
     }
     return render(request, 'product.html', context)
 
 
 def Product_Detail(request, id):
+    category = Category.objects.all().order_by('category_name')
     product = Product.objects.filter(id=id).first()
+    categoryID = request.GET.get('category')
+    review = Reviews.objects.filter(product_re = product)
+    prod = Product.objects.all()
+    if request.method=="POST":
+        reviews = Reviews(
+            name = request.POST.get('name'),
+            date = request.POST.get('date'),
+            comments = request.POST.get('comments'),
+            rate = request.POST.get("rate"),
+            product_re = product
+        )
+        reviews.save()
+    avg = Reviews.objects.filter(product_re = product).aggregate(Avg('rate'))
+    avg1 = avg["rate__avg"]
     context = {
-        'product': product
+        'category': category,
+        'product': product,
+        'review': review,
+        'avg1': avg1,
+        'prod': prod
     }
     return render(request, 'product_detail.html', context)
+
+# def Review_Pro(request,id):
+#     if request.method=="POST":
+#         review = Reviews(
+#             comments = request.POST.get('comments'),
+#             rate = request.POST.get('rate'),
+#         )
+#         review.save()
+#     product = Product.objects.all()
+#     review = Reviews.objects.all()
+#     context = {
+#         'product': product,
+#         'review': review,
+#     }
+#     return render(request, 'product_detail.html', context)
 
 
 def Search(request):
