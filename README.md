@@ -2,14 +2,14 @@
 An E-commerce website using Django
 
 <h2>Requirements</h2>
-<p> run
-<code>
+<p>
+Install requirements<code>
   pip install -r requirements.txt
 </code>
-<code>
+Database<code>
   python3 manage.py migrate
 </code>
-<code>
+Run<code>
   python3 manage.py runserver
 </code>
 </p>
