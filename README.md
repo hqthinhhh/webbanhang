@@ -3,13 +3,13 @@ An E-commerce website using Django
 
 <h2>Requirements</h2>
 <p>
-Install requirements<code>
+<code>Install requirements
   pip install -r requirements.txt
 </code>
-Database<code>
+<code>Database
   python3 manage.py migrate
 </code>
-Run<code>
+<code>Run
   python3 manage.py runserver
 </code>
 </p>
