@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-67u16070%wo+s*#v1rs0y##6t_l8-)v5n4+f)af#kp+o3tg@!y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.32.90','192.168.0.2','27.3.68.110']
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -96,8 +96,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bookstore',
         'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': '20072001'
+        'USER': '',
+        'PASSWORD': ''
     }
 }
 
